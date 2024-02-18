@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "230210205202",
+    "project_id": "yamudacarpool-8529c",
+    "storage_bucket": "yamudacarpool-8529c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230210205202:android:ef36693e2f91e51d430acb",
+        "android_client_info": {
+          "package_name": "com.example.yamudacarpooling"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2YZ6feHtH-6wN0inOIFS7N-mZu8Df2iU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
