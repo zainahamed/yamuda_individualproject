@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '230210205202',
     projectId: 'yamudacarpool-8529c',
     authDomain: 'yamudacarpool-8529c.firebaseapp.com',
+    databaseURL: 'https://yamudacarpool-8529c-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'yamudacarpool-8529c.appspot.com',
   );
 
@@ -57,6 +58,7 @@ class DefaultFirebaseOptions {
     appId: '1:230210205202:android:ef36693e2f91e51d430acb',
     messagingSenderId: '230210205202',
     projectId: 'yamudacarpool-8529c',
+    databaseURL: 'https://yamudacarpool-8529c-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'yamudacarpool-8529c.appspot.com',
   );
 
@@ -65,6 +67,7 @@ class DefaultFirebaseOptions {
     appId: '1:230210205202:ios:b60e8b39d434d4f9430acb',
     messagingSenderId: '230210205202',
     projectId: 'yamudacarpool-8529c',
+    databaseURL: 'https://yamudacarpool-8529c-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'yamudacarpool-8529c.appspot.com',
     iosBundleId: 'com.example.yamudacarpooling',
   );
@@ -74,6 +77,7 @@ class DefaultFirebaseOptions {
     appId: '1:230210205202:ios:476ea2f76815ba5e430acb',
     messagingSenderId: '230210205202',
     projectId: 'yamudacarpool-8529c',
+    databaseURL: 'https://yamudacarpool-8529c-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'yamudacarpool-8529c.appspot.com',
     iosBundleId: 'com.example.yamudacarpooling.RunnerTests',
   );

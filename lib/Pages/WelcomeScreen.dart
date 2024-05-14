@@ -64,7 +64,7 @@ class WelcomeScreen extends StatelessWidget {
                     SizedBox(
                       height: 0.2 * height * (height / width),
                     ),
-                    Text(
+                    const Text(
                       "Join Hands, \nFlexible Rides",
                       maxLines: 2,
                       style: TextStyle(
@@ -76,7 +76,7 @@ class WelcomeScreen extends StatelessWidget {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    Text(
+                    const Text(
                       "Join a friendly Community,while \nCommuting to work with a friendly chat",
                       maxLines: 2,
                       style: TextStyle(
@@ -126,8 +126,8 @@ class WelcomeScreen extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: height * 0.02),
                     width: width * 0.7,
-                    child: Center(
-                      child: const Text(
+                    child: const Center(
+                      child: Text(
                         "Sign Up",
                         style: TextStyle(
                           color: Secondary,

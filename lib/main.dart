@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:yamudacarpooling/Services/AuthService.dart';
 import 'package:yamudacarpooling/Wrapper.dart';
+import 'package:yamudacarpooling/infoHandler/App_info.dart';
 
 import 'firebase_options.dart';
 
@@ -13,10 +14,15 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => AuthServices(),
-    child: MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthServices()),
+        ChangeNotifierProvider(create: (context) => AppInfo()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,11 +36,10 @@ class MyApp extends StatelessWidget {
         designSize: Size(width, height),
         minTextAdapt: true,
         splitScreenMode: true,
-        // Use builder only if you need to use library outside ScreenUtilInit context
         builder: (_, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'First Method',
+            title: 'Yamuda',
             home: child,
           );
         },

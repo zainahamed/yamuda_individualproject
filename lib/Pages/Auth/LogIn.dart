@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:yamudacarpooling/Colors/Colors.dart';
 import 'package:yamudacarpooling/Services/AuthService.dart';
 import 'package:yamudacarpooling/Widgets/Alert.dart';
 import 'package:yamudacarpooling/Wrapper.dart';
+
+import 'ForgetPassword.dart';
 
 class LogIn extends StatefulWidget {
   final void Function() toggle;
@@ -30,16 +33,32 @@ class _LogInState extends State<LogIn> {
 
     //LogIN
     void LogIn() async {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => Dialog(
+                backgroundColor: Colors.transparent,
+                child: LoadingAnimationWidget.threeArchedCircle(
+                  color: Primary,
+                  size: 40,
+                ),
+              ));
       dynamic result = await auth.signWithEmail(
           emailController.text, passwordController.text);
       if (result.runtimeType == User) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) =>const Wrapper()));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const Wrapper(),
+          ),
+        );
       } else {
+        Navigator.pop(context);
         showDialog(
-            context: context,
-            builder: (context) =>
-                Alert(Title: "Try Again", Message: result.toString()));
+          context: context,
+          builder: (context) => Alert(
+            Title: "Try Again",
+            Message: result.toString(),
+          ),
+        );
       }
     }
 
@@ -98,7 +117,6 @@ class _LogInState extends State<LogIn> {
                           borderRadius: BorderRadius.circular(20)),
                       labelText: 'Enter Username',
                       hintText: 'e.g., john_doe@gmail.com',
-                      prefixIcon: const Icon(Icons.email), // Add a hint text
                     ),
                   ),
                 ),
@@ -122,7 +140,7 @@ class _LogInState extends State<LogIn> {
                           borderRadius: BorderRadius.circular(20)),
                       labelText: 'Enter Password',
                       hintText: 'Abc@123',
-                      prefixIcon: IconButton(
+                      suffixIcon: IconButton(
                         icon: showIcon
                             ? const Icon(Icons.visibility_off)
                             : const Icon(Icons.visibility),
@@ -132,6 +150,29 @@ class _LogInState extends State<LogIn> {
                             showIcon = !showIcon;
                           });
                         },
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForgetPassword(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          color: Primary,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -168,10 +209,11 @@ class _LogInState extends State<LogIn> {
                   ),
                 ),
               ),
-              const Text("Don't have an Account ?", style: TextStyle(color: Primary)),
+              const Text("Don't have an Account ?",
+                  style: TextStyle(color: Primary)),
               GestureDetector(
                 onTap: widget.toggle,
-                child:const Text("Sign Up",
+                child: const Text("Sign Up",
                     style:
                         TextStyle(fontWeight: FontWeight.bold, color: Primary)),
               ),

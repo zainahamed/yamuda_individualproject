@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:yamudacarpooling/Colors/Colors.dart';
-import 'package:yamudacarpooling/Pages/RequetRide.dart';
-import 'package:yamudacarpooling/Pages/StartNewPage.dart';
+import 'package:yamudacarpooling/Model/UserModel.dart';
+import 'package:yamudacarpooling/Pages/Driver/StartNewRide.dart';
+import 'package:yamudacarpooling/Pages/Passenger/RequetRide.dart';
+import 'package:yamudacarpooling/Services/AuthService.dart';
 
 class Rides extends StatefulWidget {
   const Rides({super.key});
@@ -12,6 +15,26 @@ class Rides extends StatefulWidget {
 }
 
 class _HomePageState extends State<Rides> {
+  String imageUrl = '';
+  AuthServices auth = AuthServices();
+
+  UserModel user = UserModel('....', 'contact', 0, 0, '', 'username', 'company',
+      'occupation', 'imageUrl', 'linkedin');
+
+  void initializeUser() async {
+    user = await auth.getAppUser(FirebaseAuth.instance.currentUser!.uid);
+    setState(() {
+      imageUrl = user.imageUrl!;
+    });
+  }
+
+//initialize
+  @override
+  void initState() {
+    super.initState();
+    initializeUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -64,8 +87,8 @@ class _HomePageState extends State<Rides> {
                   SizedBox(
                     height: height * 0.02,
                   ),
-                  const Text("243",
-                      style: TextStyle(
+                  Text(user.totalRides.toString(),
+                      style: const TextStyle(
                           color: Primary,
                           fontSize: 30,
                           fontWeight: FontWeight.bold)),
@@ -77,8 +100,8 @@ class _HomePageState extends State<Rides> {
                   SizedBox(
                     height: height * 0.02,
                   ),
-                  const Text("718",
-                      style: TextStyle(
+                  Text(user.totalPassengers.toString(),
+                      style: const TextStyle(
                           color: Primary,
                           fontSize: 30,
                           fontWeight: FontWeight.bold)),
@@ -98,7 +121,6 @@ class _HomePageState extends State<Rides> {
                   alignment: Alignment.topRight,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Primary,
                       borderRadius: BorderRadius.circular(5),
                       boxShadow: [
                         BoxShadow(
@@ -106,15 +128,22 @@ class _HomePageState extends State<Rides> {
                               0.5), // You can customize the shadow color
                           spreadRadius: 4,
                           blurRadius: 5,
-                          offset: Offset(0, 13),
+                          offset: const Offset(0, 13),
                         ),
                       ],
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: Image.asset(
-                        "assets/1.png",
-                        width: 0.15 * width,
+                    child: SizedBox(
+                      width: 0.15 * width,
+                      height: 0.15 * width,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: imageUrl == ''
+                            ? Image.network(
+                                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                              )
+                            : Image.network(
+                                imageUrl!,
+                              ),
                       ),
                     ),
                   ),
@@ -134,7 +163,7 @@ class _HomePageState extends State<Rides> {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const StartNewPage()));
+                      builder: (context) => const StartNewRide()));
                 },
                 child: Container(
                   padding: const EdgeInsets.all(10),

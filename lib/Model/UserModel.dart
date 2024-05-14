@@ -1,12 +1,25 @@
 class UserModel {
   final String uid;
 
-  final String username;
-  final String email;
-  final int contact;
-  final int totalRides;
-  final int totalPassengers;
+  String username;
+  String email;
+  String contact;
+  String company;
+  String occupation;
+  int totalRides;
+  int totalPassengers;
+  String? imageUrl;
+  String? linkedin;
 
-  UserModel(this.email, this.contact, this.totalRides, this.totalPassengers,
-      {required this.uid, required this.username});
+  UserModel(
+      this.email,
+      this.contact,
+      this.totalRides,
+      this.totalPassengers,
+      this.uid,
+      this.username,
+      this.company,
+      this.occupation,
+      this.imageUrl,
+      this.linkedin);
 }

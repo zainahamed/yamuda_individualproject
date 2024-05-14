@@ -1,9 +1,12 @@
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:yamudacarpooling/Colors/Colors.dart';
-import 'package:yamudacarpooling/Pages/Commiunity.dart';
+import 'package:yamudacarpooling/Globle/Globle.dart';
+import 'package:yamudacarpooling/Pages/Commiuniy/RoutePageCommiunity.dart';
 import 'package:yamudacarpooling/Pages/Profile/ProfileView.dart';
-import 'package:yamudacarpooling/Pages/Rides.dart';
+import 'package:yamudacarpooling/Pages/Rides/Rides.dart';
+import 'package:yamudacarpooling/Services/AuthService.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,8 +17,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
-  static const List<Widget> _widgetOptions = <Widget>[
-    Commiunity(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    RoutePage(),
     Rides(),
     ProfileView(),
   ];
@@ -24,6 +27,14 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  AuthServices authServices = AuthServices();
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<AuthServices>(context, listen: false)
+        .getAppUser(currentuser.uid);
   }
 
   @override

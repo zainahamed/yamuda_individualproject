@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:yamudacarpooling/Model/UserModel.dart';
 
 class AuthServices extends ChangeNotifier {
   //firebase instance
@@ -8,12 +9,16 @@ class AuthServices extends ChangeNotifier {
   //firestore instance
   final firestore = FirebaseFirestore.instance;
 
+  UserModel currentUserModel = UserModel('....', 'contact', 0, 0, '',
+      'username', 'company', 'occupation', 'imageUrl', 'linkedin');
+
   //log in
   Future<dynamic> signWithEmail(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
+      notifyListeners();
       return user;
     } catch (e) {
       // Handle specific Firebase authentication errors
@@ -29,6 +34,7 @@ class AuthServices extends ChangeNotifier {
             break;
         }
       }
+      notifyListeners();
 
       return errorMessage;
     }
@@ -36,7 +42,13 @@ class AuthServices extends ChangeNotifier {
 
   //Register
   Future registerWithEmail(
-      String email, String password, String name, String contact) async {
+      String email,
+      String password,
+      String name,
+      String contact,
+      String company,
+      String occupation,
+      String linkedin) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -50,6 +62,10 @@ class AuthServices extends ChangeNotifier {
         'contact': contact,
         'rides': 0,
         'passengers': 0,
+        'imageUrl': '',
+        'company': company,
+        'occupation': occupation,
+        'linkedin': linkedin
       });
 
       return user;
@@ -61,5 +77,103 @@ class AuthServices extends ChangeNotifier {
   //sign out
   Future<void> signOut() async {
     await _auth.signOut();
+    notifyListeners();
+  }
+
+  //get User from database
+  Future<dynamic> getAppUser(String id) async {
+    try {
+      DocumentSnapshot userSnapshot =
+          await FirebaseFirestore.instance.collection("AppUser").doc(id).get();
+
+      if (userSnapshot.exists) {
+        Map<String, dynamic>? userData =
+            userSnapshot.data() as Map<String, dynamic>?;
+
+        if (userData != null) {
+          // debugPrint(userData.toString());
+
+          UserModel userModel = UserModel(
+              userData['email'],
+              userData['contact'],
+              userData['rides'],
+              userData['passengers'],
+              userData['appUserId'],
+              userData['name'],
+              userData['company'],
+              userData['occupation'],
+              userData['imageUrl'],
+              userData['linkedin']);
+          currentUserModel = userModel;
+
+          notifyListeners();
+          return userModel;
+        } else {
+          return null;
+        }
+      }
+    } catch (error) {
+      print('Error retrieving user: $error');
+    }
+  }
+
+  Future<dynamic> getReleventAppUser(String id) async {
+    try {
+      DocumentSnapshot userSnapshot =
+          await FirebaseFirestore.instance.collection("AppUser").doc(id).get();
+
+      if (userSnapshot.exists) {
+        Map<String, dynamic>? userData =
+            userSnapshot.data() as Map<String, dynamic>?;
+
+        if (userData != null) {
+          // debugPrint(userData.toString());
+
+          UserModel userModel = UserModel(
+              userData['email'],
+              userData['contact'],
+              userData['rides'],
+              userData['passengers'],
+              userData['appUserId'],
+              userData['name'],
+              userData['company'],
+              userData['occupation'],
+              userData['imageUrl'],
+              userData['linkedin']);
+
+          notifyListeners();
+          return userModel;
+        } else {
+          return null;
+        }
+      }
+    } catch (error) {
+      print('Error retrieving user: $error');
+    }
+  }
+
+  //Update user
+  Future<bool> updateUser(
+      String name,
+      String email,
+      String contact,
+      String company,
+      String occupation,
+      String imageUrl,
+      String linkdnUrl) async {
+    try {
+      await firestore.collection('AppUser').doc(_auth.currentUser!.uid).update({
+        'name': name,
+        'contact': contact,
+        'occupation': occupation,
+        'company': company,
+        'imageUrl': imageUrl,
+        'linkedin': linkdnUrl,
+      });
+      return true;
+    } catch (error) {
+      print("Error updating userName in Firestore: $error");
+      return false;
+    }
   }
 }

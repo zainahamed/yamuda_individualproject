@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:yamudacarpooling/Colors/Colors.dart';
 import 'package:yamudacarpooling/Pages/WelcomeScreen.dart';
 
 import 'Pages/HomePage.dart';
@@ -9,14 +11,16 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
-      body: StreamBuilder(
+      body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Loading state
-            return CircularProgressIndicator();
+            return LoadingAnimationWidget.staggeredDotsWave(
+              color: Primary,
+              size: 40,
+            );
           } else if (snapshot.hasData) {
             // User is signed in
             return HomePage();
