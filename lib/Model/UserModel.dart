@@ -10,6 +10,10 @@ class UserModel {
   int totalPassengers;
   String? imageUrl;
   String? linkedin;
+  String? emgContact;
+  String? emgEmail;
+  String? emgName;
+  String? emgRelationship;
 
   UserModel(
       this.email,
@@ -21,5 +25,9 @@ class UserModel {
       this.company,
       this.occupation,
       this.imageUrl,
-      this.linkedin);
+      this.linkedin,
+      this.emgContact,
+      this.emgEmail,
+      this.emgName,
+      this.emgRelationship);
 }

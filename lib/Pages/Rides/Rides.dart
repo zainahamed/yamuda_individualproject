@@ -18,8 +18,21 @@ class _HomePageState extends State<Rides> {
   String imageUrl = '';
   AuthServices auth = AuthServices();
 
-  UserModel user = UserModel('....', 'contact', 0, 0, '', 'username', 'company',
-      'occupation', 'imageUrl', 'linkedin');
+  UserModel user = UserModel(
+      '....',
+      'contact',
+      0,
+      0,
+      '',
+      'username',
+      'company',
+      'occupation',
+      'imageUrl',
+      'linkedin',
+      '055555',
+      'emgEmail',
+      'emgName',
+      'emgRelationship');
 
   void initializeUser() async {
     user = await auth.getAppUser(FirebaseAuth.instance.currentUser!.uid);

@@ -28,6 +28,10 @@ class _CreateAccountState extends State<CreateAccount> {
   TextEditingController companyController = TextEditingController();
   TextEditingController occupationController = TextEditingController();
   TextEditingController linkedinController = TextEditingController();
+  TextEditingController emgContactController = TextEditingController();
+  TextEditingController emgEmailController = TextEditingController();
+  TextEditingController emgNameController = TextEditingController();
+  TextEditingController emgRelationshipController = TextEditingController();
 
   String message = "";
 
@@ -36,14 +40,17 @@ class _CreateAccountState extends State<CreateAccount> {
   void register() async {
     if (passwordController.text == confrimPasswordController.text) {
       dynamic result = await auth.registerWithEmail(
-        emailController.text,
-        passwordController.text,
-        nameController.text,
-        contactController.text,
-        companyController.text,
-        occupationController.text,
-        linkedinController.text,
-      );
+          emailController.text,
+          passwordController.text,
+          nameController.text,
+          contactController.text,
+          companyController.text,
+          occupationController.text,
+          linkedinController.text,
+          emgContactController.text,
+          emgEmailController.text,
+          emgNameController.text,
+          emgRelationshipController.text);
 
       if (result.runtimeType != String) {
         Navigator.of(context)
@@ -313,6 +320,115 @@ class _CreateAccountState extends State<CreateAccount> {
                             });
                           },
                         ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                    child: TextFormField(
+                      controller: emgNameController,
+                      keyboardType: TextInputType.emailAddress,
+                      obscureText: false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please Enter the Emergency Name";
+                        } else if (value.length > 15) {
+                          return 'Name should not be greater than 15 characters';
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        labelText: 'Enter Emergency Name',
+                        hintText: 'e.g., john',
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                    child: TextFormField(
+                      controller: emgContactController,
+                      keyboardType: TextInputType.emailAddress,
+                      obscureText: false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please Enter the Emergency Contact Number";
+                        } else {
+                          // Remove any non-digit characters from the input
+                          String cleanedValue =
+                              value.replaceAll(RegExp(r'\D'), '');
+
+                          // Validate the cleaned value
+                          if (cleanedValue.length != 10 ||
+                              !cleanedValue.startsWith('0')) {
+                            return 'Enter a valid Contact Number';
+                          }
+
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        labelText: 'Enter Emergency Contact',
+                        hintText: '07xxxxxxxx',
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                    child: TextFormField(
+                      controller: emgEmailController,
+                      keyboardType: TextInputType.emailAddress,
+                      obscureText: false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please Enter the Emergency Email";
+                        } else {
+                          // Basic email format validation using a regular expression
+                          String emailRegex =
+                              r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$';
+                          RegExp regex = RegExp(emailRegex);
+
+                          if (!regex.hasMatch(value)) {
+                            return 'Enter a valid email address';
+                          }
+
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        labelText: 'Enter Emergency Email',
+                        hintText: 'e.g., john_doe@gmail.com',
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                    child: TextFormField(
+                      controller: emgRelationshipController,
+                      keyboardType: TextInputType.emailAddress,
+                      obscureText: false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please Enter the Emergency Contact RelationShip";
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        labelText: 'Emergency Contact RelationShip',
+                        hintText: 'e.g., Father',
                       ),
                     ),
                   ),

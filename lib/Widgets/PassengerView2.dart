@@ -19,20 +19,26 @@ class PassengerView2 extends StatefulWidget {
       required this.destination});
 
   @override
-  State<PassengerView2> createState() => _MyWidgetState();
+  State<PassengerView2> createState() => _PassengerView2State();
 }
 
-class _MyWidgetState extends State<PassengerView2> {
+class _PassengerView2State extends State<PassengerView2> {
   final ConfirmRoute confirmRoute = ConfirmRoute();
 
   AuthServices auth = AuthServices();
 
+  UserModel? user;
+
+  Future<void> getUser() async {
+    user = await auth.getReleventAppUser(widget.passengerId);
+    setState(() {}); // Update the UI when user is fetched
+  }
+
   Future<void> makePhoneCall(String phoneNumber) async {
     String telScheme = 'tel:$phoneNumber';
-    Uri telUri = Uri.parse(telScheme); // Convert string to Uri
+    Uri telUri = Uri.parse(telScheme);
 
     if (await canLaunchUrl(telUri)) {
-      // Pass Uri object to canLaunchUrl
       await launch(telScheme);
     } else {
       throw 'Could not launch $telScheme';
@@ -40,8 +46,23 @@ class _MyWidgetState extends State<PassengerView2> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    if (user == null) {
+      return SizedBox(
+        height: 60,
+        width: 400,
+        child: Center(
+            child:
+                CircularProgressIndicator()), // Show a loading indicator while fetching the user
+      );
+    }
+    return SizedBox(
       height: 60,
       width: 400,
       child: Padding(
@@ -52,19 +73,18 @@ class _MyWidgetState extends State<PassengerView2> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Checkbox(value: widget.isPickup, onChanged: null),
-                    Text(widget.passengerName),
+                    Text("${user!.username}*${user!.emgRelationship} -"),
+                    Text(user!.emgName!)
                   ],
                 ),
                 OutlinedButton(
                     onPressed: () async {
-                      UserModel user =
-                          await auth.getReleventAppUser(widget.passengerId);
-                      makePhoneCall(user.contact);
+                      makePhoneCall(user!.emgContact!);
                     },
-                    child: const Text("     Call    "))
+                    child: const Text("    Call    "))
               ],
             ),
           ],

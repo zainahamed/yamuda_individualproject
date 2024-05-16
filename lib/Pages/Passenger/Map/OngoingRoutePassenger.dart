@@ -12,7 +12,6 @@ import 'package:yamudacarpooling/Assistant/assistant_method.dart';
 import 'package:yamudacarpooling/Colors/Colors.dart';
 import 'package:yamudacarpooling/Globle/Globle.dart';
 import 'package:yamudacarpooling/Model/UserModel.dart';
-import 'package:yamudacarpooling/Pages/HomePage.dart';
 import 'package:yamudacarpooling/Services/AuthService.dart';
 import 'package:yamudacarpooling/Services/ConfirmRoute.dart';
 import 'package:yamudacarpooling/Services/RouteService.dart';
@@ -235,7 +234,7 @@ class _OngoingRoutePassengerState extends State<OngoingRoutePassenger> {
     });
   }
 
-  void displayDriverReponse(QuerySnapshot snapshot) {
+  void displayDriverResponse(QuerySnapshot snapshot) {
     // Loop through the documents in the snapshot
     snapshot.docs.forEach((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -403,8 +402,8 @@ class _OngoingRoutePassengerState extends State<OngoingRoutePassenger> {
                           });
                           await confirmRoute.setPassngerToDropped(
                               currentuser.uid, context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const HomePage()));
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 12),
@@ -449,7 +448,7 @@ class _OngoingRoutePassengerState extends State<OngoingRoutePassenger> {
     _driverRequestsSubscription = confirmRoute
         .getDriverResponse(currentuser.uid, context)
         .listen((event) {
-      displayDriverReponse(event);
+      displayDriverResponse(event);
     });
     // block();
 

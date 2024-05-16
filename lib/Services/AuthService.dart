@@ -9,8 +9,21 @@ class AuthServices extends ChangeNotifier {
   //firestore instance
   final firestore = FirebaseFirestore.instance;
 
-  UserModel currentUserModel = UserModel('....', 'contact', 0, 0, '',
-      'username', 'company', 'occupation', 'imageUrl', 'linkedin');
+  UserModel currentUserModel = UserModel(
+      '....',
+      'contact',
+      0,
+      0,
+      '',
+      'username',
+      'company',
+      'occupation',
+      'imageUrl',
+      'linkedin',
+      'emgContact',
+      'emgEmail',
+      'emgName',
+      'emgRelationship');
 
   //log in
   Future<dynamic> signWithEmail(String email, String password) async {
@@ -48,7 +61,11 @@ class AuthServices extends ChangeNotifier {
       String contact,
       String company,
       String occupation,
-      String linkedin) async {
+      String linkedin,
+      String emgContact,
+      String emgEmail,
+      String emgName,
+      String emgRelationship) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -65,7 +82,11 @@ class AuthServices extends ChangeNotifier {
         'imageUrl': '',
         'company': company,
         'occupation': occupation,
-        'linkedin': linkedin
+        'linkedin': linkedin,
+        'emgContact': emgContact,
+        'emgEmail': emgEmail,
+        'emgName': emgName,
+        'emgRelationship': emgRelationship
       });
 
       return user;
@@ -103,7 +124,11 @@ class AuthServices extends ChangeNotifier {
               userData['company'],
               userData['occupation'],
               userData['imageUrl'],
-              userData['linkedin']);
+              userData['linkedin'],
+              userData['emgContact'],
+              userData['emgEmail'],
+              userData['emgName'],
+              userData['emgRelationship']);
           currentUserModel = userModel;
 
           notifyListeners();
@@ -139,7 +164,11 @@ class AuthServices extends ChangeNotifier {
               userData['company'],
               userData['occupation'],
               userData['imageUrl'],
-              userData['linkedin']);
+              userData['linkedin'],
+              userData['emgContact'],
+              userData['emgEmail'],
+              userData['emgName'],
+              userData['emgRelationship']);
 
           notifyListeners();
           return userModel;
@@ -160,7 +189,11 @@ class AuthServices extends ChangeNotifier {
       String company,
       String occupation,
       String imageUrl,
-      String linkdnUrl) async {
+      String linkdnUrl,
+      String emgContact,
+      String emgEmail,
+      String emgName,
+      String emgRelationship) async {
     try {
       await firestore.collection('AppUser').doc(_auth.currentUser!.uid).update({
         'name': name,
@@ -169,6 +202,10 @@ class AuthServices extends ChangeNotifier {
         'company': company,
         'imageUrl': imageUrl,
         'linkedin': linkdnUrl,
+        'emgContact': emgContact,
+        'emgEmail': emgEmail,
+        'emgName': emgName,
+        'emgRelationship': emgRelationship
       });
       return true;
     } catch (error) {
